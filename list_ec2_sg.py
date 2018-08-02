@@ -4,7 +4,6 @@
 import sys
 import boto
 from boto import ec2
-from boto import sns
 connection=ec2.connect_to_region("eu-west-1")
 sg=connection.get_all_security_groups()
 l = []
