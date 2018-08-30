@@ -1,0 +1,17 @@
+# This is a python script that checks if the entered string is palindrome 
+# or not. This script also ignores the special character while checking
+# if the entered string is palindrome or not.
+
+str1 = raw_input("enter a string:")
+strnew = ''
+for ch in str1:
+   num = ord(ch)
+   if 48 <= num <= 57 or 65 <= num <= 90 or 97 <= num <= 122:
+      strnew = strnew + ch
+str2 = strnew[::-1]
+if strnew == str2:
+  print "String is palindrome"
+else:
+  print "String is not a palindrome"
+ 
+
