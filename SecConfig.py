@@ -60,7 +60,7 @@ roles = []
 kwargs = {}
 #count = 0
 while True:
-    count +=1
+   # count +=1
     resp = boto3_iam.list_roles(**kwargs)
     roles.extend(resp['Roles'])
     if resp['IsTruncated']:
