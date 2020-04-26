@@ -79,3 +79,6 @@ def create_presigned_url(bucket_name, object_name, expiration=3600):
 pathlib.Path("../s3_presigned_url").write_text(
     create_presigned_url(bucket_name, latest(bucket_name, database_name))
 )
+
+print(pathlib.Path("../s3_presigned_url").read_text())
+
