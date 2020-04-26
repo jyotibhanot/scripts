@@ -18,13 +18,6 @@ args = parser.parse_args()
 bucket_name = args.bucket_name
 database_name = args.database_name
 
-def get_location(client, bucket_name):
-    """Provides the bucket region
-    :param bucket_name: string
-    :return: bucket region
-    """
-    return client.get_bucket_location(Bucket=bucket_name)["LocationConstraint"]
-
 def keys(bucket_name, prefix="", delimiter="/"):
     """Generate a key listings
     :param bucket_name: string
@@ -59,10 +52,10 @@ def create_presigned_url(bucket_name, object_name, expiration=3600):
     :param expiration: Time in seconds for the presigned URL to remain valid
     :return: Presigned URL as string. If error, returns None.
     """
-    
+
     # Generate a presigned URL for the S3 object
     s3_client = boto3.session.Session(
-        region_name=get_location(boto3.client("s3"), "moe-database-backup")
+        region_name=boto3.client('s3').get_bucket_location(Bucket=bucket_name)["LocationConstraint"]
     ).client("s3")
     try:
         response = s3_client.generate_presigned_url('get_object',
@@ -76,9 +69,10 @@ def create_presigned_url(bucket_name, object_name, expiration=3600):
     # The response contains the presigned URL
     return response
 
-pathlib.Path("../s3_presigned_url").write_text(
-    create_presigned_url(bucket_name, latest(bucket_name, database_name))
-)
-
+if __name__ == "__main__":
+    pathlib.Path("../s3_presigned_url").write_text(
+        create_presigned_url(bucket_name, latest(bucket_name, database_name))
+    )
+    
 print(pathlib.Path("../s3_presigned_url").read_text())
 
